@@ -1,0 +1,22 @@
+# Summary
+
+* [Introduction](README.md)
+* [Dependencies](/dependencies.md)
+* [Auth0 Setup](auth0-setup.md)
+* [Node API](node-api.md)
+* [Angular Setup](angular-setup.md)
+* [Angular Architecture](angular-architecture.md)
+* [Home Component](home-component.md)
+* [Modules and Routing](modules-and-routing.md)
+* [Loading and Error Components](loading-and-error-components.md)
+* [API Service](/api-service.md)
+* [Authentication Service](authentication-service.md)
+* [Route Guards](route-guards.md)
+* [Token Interceptor Service](token-interceptor-service.md)
+* [Callback Component](callback-component.md)
+* [Header Component](/header-component.md)
+* [Profile Component](profile-component.md)
+* [Dinosaurs Component](dinosaurs-component.md)
+* [Production Configuration](build-and-deploy.md)
+* [Conclusion](conclusion.md)
+
