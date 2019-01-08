@@ -5,8 +5,7 @@ The Authentication service supplies our app with the methods it needs to log in,
 ```js
 // src/app/auth/auth.service.ts
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, bindNodeCallback, timer, of, Subscription } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import { BehaviorSubject, bindNodeCallback } from 'rxjs';
 import * as auth0 from 'auth0-js';
 import { environment } from './../../environments/environment';
 import { Location } from '@angular/common';
@@ -30,7 +29,6 @@ export class AuthService {
   });
   // localStorage property names
   private authFlag = 'isLoggedIn';
-  private redirect = 'redirect';
   // Store access token and create stream
   accessToken: string = null;
   accessToken$ = new BehaviorSubject<string>(this.accessToken);
@@ -45,9 +43,9 @@ export class AuthService {
   // Create observable of Auth0 checkSession method to
   // verify authorization server session and renew tokens
   checkSession$ = bindNodeCallback(this.Auth0.checkSession.bind(this.Auth0));
+
   // Token expiration management
   accessTokenExp: number;
-  refreshSub: Subscription;
   // Hide auth header while performing local login
   // (e.g., on the callback page)
   hideAuthHeader: boolean;
@@ -57,15 +55,7 @@ export class AuthService {
     private location: Location
   ) { }
 
-  login(autoLogin?: boolean) {
-    // Was this triggered by unauthorized access attempt?
-    if (!autoLogin) {
-      // If user clicked login button, store path
-      // to redirect to after successful login
-      this.storeAuthRedirect(this.router.url);
-      // If login was triggered by an access attempt
-      // instead, the route guard will set redirect
-    }
+  login() {
     this.Auth0.authorize();
   }
 
@@ -80,7 +70,7 @@ export class AuthService {
           this.location.replaceState('/');
           // Log in locally and navigate
           this.localLogin(authResult);
-          this.navigateAfterParseHash();
+          this.router.navigateByUrl(this.defaultSuccessPath);
         },
         err => this.handleError(err)
       );
@@ -113,24 +103,18 @@ export class AuthService {
       this.userProfile$.next(this.userProfile);
       // Set flag in local storage stating app is logged in
       localStorage.setItem(this.authFlag, JSON.stringify(true));
-      // Set up silent token renewal for this browser session
-      this.scheduleRenewal();
     } else {
       // Something was missing from expected authResult
-      this.localLogout(true);
+      this.localLogout();
     }
+    this.hideAuthHeader = false;
   }
 
-  private localLogout(redirect?: boolean) {
+  private localLogout() {
     this.userProfile$.next(null);
     this.setToken(null);
-    this.unscheduleRenewal();
-    this.clearRedirect();
     localStorage.setItem(this.authFlag, JSON.stringify(false));
-    // Redirect back to logout URL (if param set)
-    if (redirect) {
-      this.goToLogoutUrl();
-    }
+    this.goToLogoutUrl();
   }
 
   logout() {
@@ -144,30 +128,11 @@ export class AuthService {
     });
   }
 
-  scheduleRenewal() {
-    if (!this.isAuthenticated) { return; }
-    // Clean up any previous token renewal
-    this.unscheduleRenewal();
-    // Create and subscribe to expiration timer observable
-    const expiresIn$ = of(this.accessTokenExp).pipe(
-      mergeMap(exp => timer(Math.max(1, exp - Date.now())))
-    );
-    this.refreshSub = expiresIn$.subscribe(
-      () => this.renewAuth()
-    );
-  }
-
-  unscheduleRenewal() {
-    if (this.refreshSub) {
-      this.refreshSub.unsubscribe();
-    }
-  }
-
   private handleError(err) {
     this.hideAuthHeader = false;
     console.error(err);
     // Log out locally and redirect to default auth failure route
-    this.localLogout(true);
+    this.localLogout();
   }
 
   get isAuthenticated(): boolean {
@@ -178,31 +143,6 @@ export class AuthService {
   setToken(token: string) {
     this.accessToken = token;
     this.accessToken$.next(token);
-  }
-
-  navigateAfterParseHash() {
-    const rd = localStorage.getItem(this.redirect);
-    if (rd) {
-      this.router.navigateByUrl(rd).then(
-        navigated => {
-          if (navigated) {
-            this.hideAuthHeader = false;
-          }
-          this.clearRedirect();
-        }
-      );
-    } else {
-      this.clearRedirect();
-      this.router.navigateByUrl(this.defaultSuccessPath);
-    }
-  }
-
-  storeAuthRedirect(url: string) {
-    localStorage.setItem(this.redirect, url);
-  }
-
-  clearRedirect() {
-    localStorage.removeItem(this.redirect);
   }
 
   goToLogoutUrl() {
