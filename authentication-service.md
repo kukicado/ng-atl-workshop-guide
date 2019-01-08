@@ -160,5 +160,32 @@ We will use Auth0's `/authorize` endpoint \(called with the [auth0.js](https://a
 
 > **Note**: If the user logged in with a [social identity provider](/auth0-setup.md#set-up-social-identity-providers) and Auth0 dev keys are set up for the connection, any attempts to renew the session silently will return a `login_required` error. To avoid this error, set up client accounts with all social IdPs.
 
+## Update Root Component
+
+Next, go into your `app.component.ts` file and in the `ngOnInit` method add the code to renew user authentication whenever the application is reloaded.
+
+```js
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from './auth/auth.service';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent implements OnInit {
+
+  constructor(public auth: AuthService) {}
+
+  ngOnInit() {
+    // If the app believes there is an active session
+    // on Auth0 authorization server, attempt to renew auth
+    this.auth.renewAuth();
+  }
+}
+```
+
+Renew user authentication when the app is reloaded. The `ngOnInit` lifecycle hook runs whenever the App component is initiated.
+
 
 
