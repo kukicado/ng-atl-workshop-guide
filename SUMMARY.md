@@ -11,7 +11,7 @@
 * [Loading and Error Components](loading-and-error-components.md)
 * [API Service](/api-service.md)
 * [Dinosaurs Component](dinosaurs-component.md)
-* [Authentication Service](authentication-service.md)
+* [Authentication Service (Part 1)](authentication-service.md)
 * [Header Component](/header-component.md)
 * [Callback Component](callback-component.md)
 * [Profile Component](profile-component.md)
