@@ -45,5 +45,58 @@ export class AuthGuard implements CanActivate {
 }
 ```
 
-The Auth guard uses the [canActivate](https://angular.io/api/router/CanActivate) interface \(as we saw in our [app routing](/modules-and-routing.md#app-routes)\) to activate the requested route if conditions are met \(in this case, if the `isAuthenticated` method returns `true`\). If conditions are not met, the user is prompted to log in, and the guarded URL is passed to the `login()` method so that the user can be redirected to this route once they're authenticated.
+Our Auth guard is now created, but it is currently not being used. We'll have to tell our Angular application which routes to use this route guard on. We'll do that in the next section.
 
+## Update Routes
+
+Now let's go back into our routes module and implement the AuthGuard. Update the code to look like this:
+
+```js
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { SecureInterceptor } from './auth/secure-interceptor.service';
+import { AuthGuard } from './auth/auth.guard';
+import { HomeComponent } from './pages/home/home.component';
+import { CallbackComponent } from './pages/callback.component';
+import { DinosaursComponent } from './pages/dinosaurs/dinosaurs.component';
+import { DinosaurDetailsComponent } from './pages/dinosaur-details/dinosaur-details.component';
+import { ProfileComponent } from './pages/profile/profile.component';
+
+const routes: Routes = [
+  {
+    path: 'callback',
+    component: CallbackComponent
+  },
+  {
+    path: 'dinosaurs',
+    component: DinosaursComponent
+  },
+  {
+    path: 'dinosaur/:name',
+    component: DinosaurDetailsComponent,
+    canActivate: [
+      AuthGuard
+    ]
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    canActivate: [
+      AuthGuard
+    ]
+  },
+  {
+    path: '',
+    component: HomeComponent,
+    pathMatch: 'full'
+  }
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+```
+
+The Auth guard uses the [canActivate](https://angular.io/api/router/CanActivate) interface \(as we saw in our [app routing](/modules-and-routing.md#app-routes)\) to activate the requested route if conditions are met \(in this case, if the `isAuthenticated` method returns `true`\). If conditions are not met, the user is prompted to log in, and the guarded URL is passed to the `login()` method so that the user can be redirected to this route once they're authenticated.

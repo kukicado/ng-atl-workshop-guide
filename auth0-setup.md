@@ -17,7 +17,7 @@ Create a new Auth0 API by navigating to the [APIs](https://manage.auth0.com/#/ap
 
 Click the **Create** button to save your new API. Make note of the **Identifier**. We will need this setting in both our [Node.js API](/node-api.md#configuration) and our [Angular app configuration](/angular-setup.md#configure-environment) \(it will be our `audience` value\).
 
-## Create a Application {#create-a-client}
+## Create an Application {#create-a-client}
 
 Auth0 _applications_ represent clients; in this case, our Angular front-end. Create a new application by navigating to the [Applications](https://manage.auth0.com/#/applications) item in the sidebar and clicking the **+Create Application** button. You should see the following screen:
 

@@ -6,7 +6,7 @@ We'll need to create a Node.js API to provide data to our Angular application. T
 
 > For brevity, we will not actually write the API code in the workshop, but will examine the code and understand how it works before using it in our Angular application. 
 
-## Configuration {#configuration}
+## Configuration
 
 Let's add our Auth0 configuration to the `.env` environment file:
 
@@ -14,7 +14,7 @@ Let's add our Auth0 configuration to the `.env` environment file:
 PORT=3005
 ISSUER_BASE_URL=https://{authorization_server_issuer} // e.g., https://{you}.auth0.com
 ALLOWED_AUDIENCES={audiences,comma-separated} // e.g., https://secure-dino-api
-ROLES_CLAIM_NAMESPACE={collision-resistant roles namespace} // e.g., https://secure-dino-api/roles
+ROLES_CLAIM_NAMESPACE={collision-resistant roles namespace} // e.g., https://secure-dino-api/roles, explained below.
 ```
 
 Here we will add our Auth0 **domain**, **API identifier** \(audience here\), and roles rule **namespace**.
@@ -23,7 +23,7 @@ Here we will add our Auth0 **domain**, **API identifier** \(audience here\), and
 
 ## Server File
 
-Open the `server.js` file and add the following code:
+Open the `server.js` file and let's examine the code:
 
 ```js
 // General Dependencies
@@ -52,7 +52,7 @@ When started, the server will run on localhost at [http://localhost:3005](http:/
 
 ## API Routes
 
-Open the `routes.js` file and add this code:
+Open the `routes.js` file and let's examine the code:
 
 ```js
 // Source
@@ -172,7 +172,7 @@ The `/api/secure/dinosaur/:name` endpoint is going to be secured and require a u
 
 Finally, the `/api/secure/fav` endpoint is going to be secured and require a user to be authenticated. In addition the user will have to have the `write:dino-fav` scope as well as a custom role of `editor` to be able to succesfully interact with the endpoint.
 
-## Serve the API {#serve-the-api}
+## Serve the API
 
 To start the server, run the following command from the root of the folder containing your `server.js` file:
 
@@ -189,7 +189,7 @@ nodemon server
 
 When served, the API will be available at [http://localhost:3005/](http://localhost:3005/).
 
-## Postman Collection {#postman-collection}
+## Postman Collection
 
 Working with the API by calling the endpoint with our browser will only get us so far in understanding how the API works. For a better experience, install the [Postman collection](https://www.getpostman.com/collections/c9ef038a60f4e1fb461e) for our API.
 
@@ -199,13 +199,13 @@ To install the collection, open Postman, navigate to the file menu and select **
 
 Navigate to the **Collections** tab and you should see the newly imported collection called `node-secure-dino-api` which will have 3 requests available to use. We will be using Postman for the rest of our API examples.
 
-## Token Minter {#token-minter}
+## Token Minter
 
 If you've tried to call any of the Postman endpoints besides the Dinosaurs List, you've likely received errors saying that you are not authorized to access the resource. Let's fix that. We'll use the Token Minter tool to help us generate JSON Web Tokens that can serve as our authentication and authorization artifacts.
 
 To get started navigate to [https://token-minter.kmaida.io/](https://token-minter.kmaida.io/). To get an `access_token` that you can use with the secure-dinos-api, you'll need to enter your Auth0 credentials. In this case, you'll need the **Domain**, **Client ID**, **Audience**, and optionally **Scope**. We'll walk through these together.
 
-## Custom Rule - User Role {#custom-rule}
+## Custom Rule - User Role
 
 For our API, one of the endpoints also requires a custom claim. Our Angular application, or Token Minter thus far, does not have permission alone to grant this scope. We will implement a custom [Auth0 Rule](https://auth0.com/docs/rules/current), that will allow us to add this custom roles claim to our `access_token`.
 

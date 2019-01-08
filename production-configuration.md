@@ -84,7 +84,7 @@ You can copy your configuration from environment.ts for now, and just update the
 
 > Note: For simplicity, we will use the same client and API that we used in development.
 
-## Build and Serve App
+## Build App
 
 Now we can build our Angular app for production. Do so using this command:
 
@@ -101,11 +101,31 @@ The `--prod`` meta-flag does the following:
 
 The production build files will be saved in a dist folder in the root and the build command will use the configuration in the `environment.prod.ts` file.
 
+## Serve App
+
 We can now run our production app build by starting the web server like so:
 
 ```
 node server
 ```
+
+Additionally, we can build and serve our app by adding a new NPM script to our `package.json` file. Add the following:
+
+Add `stage` and `prod` NPM scripts to the `/package.json` file:
+
+```json
+// package.json
+{
+  ...
+  "scripts": {
+    ...,
+    "prod": "ng build --prod && node server"
+  },
+  ...
+}
+```
+
+Now you can simple run `npm run prod` and your application will build, and then automatically serve.
 
 ## Update Auth0 Client Configuration
 

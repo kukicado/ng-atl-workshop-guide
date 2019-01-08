@@ -2,7 +2,7 @@
 
 Now it's time to call our API and display data to authenticated users in our Dinosaurs component.
 
-## Dinosaurs Component Class {#dinosaurs-component-class}
+## Dinosaurs Component Class
 
 Next open the `dinosaurs.component.ts` class file:
 
@@ -72,11 +72,9 @@ We're using the [Async pipe](https://angular.io/api/common/AsyncPipe) declarativ
 
 > **Note**: You can test error handling in your app by stopping the Node API server. This will cause API requests to fail in the Angular app, and it should display errors appropriately.
 
-## Dino Details
+## Dino Component Class
 
-We are also using the `app-dino` component to display additional details about the dinosaurs. Let's go ahead and implement that code as well.
-
-## Dinos Component
+We are also using the `app-dino`child  component to display additional details about the dinosaurs. Let's go ahead and implement that code as well.
 
 ```js
 import { Component, OnInit, Input } from '@angular/core';
@@ -99,7 +97,7 @@ export class DinoComponent implements OnInit {
 }
 ```
 
-## Dino Template
+## Dino Component Template
 
 ```html
 <div class="card my-2">
