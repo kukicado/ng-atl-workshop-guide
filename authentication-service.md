@@ -11,6 +11,7 @@ Go to the Rules section in the Dashboard sidebar and click the +Create Rule butt
 
 Add the following code as shown below:
 
+```js
 // Set roles to a user
 function (user, context, callback) {
   // Make sure the user has verified their email address
@@ -45,6 +46,7 @@ function (user, context, callback) {
     }
   });
 }
+```
 Set up a pattern for the editor user to be specifically identified. The example above uses email matching with strict equality. Make sure you also add the app metadata containing your roles to the accessToken as well as the idToken. The access token will provide data to our API so we can verify that the user has the appropriate role when they request resources.
 
 Note: You can use any type of condition you'd like to identify admin users: by email, provider, name, domain, etc.
