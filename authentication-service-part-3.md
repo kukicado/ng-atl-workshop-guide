@@ -26,7 +26,7 @@ export class AuthService {
     responseType: 'token id_token',
     audience: 'https://secure-dino-api',
     redirectUri: environment.auth.redirect,
-    scope: 'openid profile email read:dino-details write:dino-fav read:admin'
+    scope: 'openid profile email read:dino-details write:dino-fav'
   });
   // localStorage property names
   private authFlag = 'isLoggedIn';
