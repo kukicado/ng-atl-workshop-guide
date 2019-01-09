@@ -1,5 +1,59 @@
 # Authentication Service
 
+
+## Adding a Custom Rule - User Role
+
+For our API, one of the endpoints also requires a custom claim. Our Angular application, or Token Minter thus far, does not have permission alone to grant this scope. We will implement a custom Auth0 Rule, that will allow us to add this custom roles claim to our access_token.
+
+Auth0 Rules are JavaScript functions that are executed in Auth0 as part of the transaction every time a user authenticates. In this way, rules allow you to easily customize and extend your authentication process. We want to use a rule to add a role to users that log into our app. In this manner, we can authorize specific user roles in different ways.
+
+Go to the Rules section in the Dashboard sidebar and click the +Create Rule button. Choose the Empty Rule template. (Alternatively, you could choose the Set roles to a user template and modify it according to your needs.)
+
+Add the following code as shown below:
+
+// Set roles to a user
+function (user, context, callback) {
+  // Make sure the user has verified their email address
+  if (!user.email || !user.email_verified) {
+    return callback(new UnauthorizedError('Please verify your email before logging in.'));
+  }
+  user.app_metadata = user.app_metadata || {};
+  var addRolesToUser = function(user, cb) {
+    // Replace {YOUR_FULL_EMAIL_HERE} with your own email address
+    if (user.email && user.email === '{YOUR_FULL_EMAIL_HERE}') {
+      cb(null, ['editor']);
+    } else {
+      cb(null, []);
+    }
+  };
+  addRolesToUser(user, function(err, roles) {
+    if (err) {
+      callback(err);
+    } else {
+      user.app_metadata.roles = roles;
+      auth0.users.updateAppMetadata(user.user_id, user.app_metadata)
+        .then(function(){
+          var namespace = 'https://secure-dino-api/roles';
+          var userRoles = user.app_metadata.roles;
+          context.idToken[namespace] = userRoles;
+          context.accessToken[namespace] = userRoles;
+          callback(null, user, context);
+        })
+        .catch(function(err){
+          callback(err);
+        });
+    }
+  });
+}
+Set up a pattern for the editor user to be specifically identified. The example above uses email matching with strict equality. Make sure you also add the app metadata containing your roles to the accessToken as well as the idToken. The access token will provide data to our API so we can verify that the user has the appropriate role when they request resources.
+
+Note: You can use any type of condition you'd like to identify admin users: by email, provider, name, domain, etc.
+
+The namespace identifier in the addRolesToUser() callback function can be any non-Auth0 HTTP or HTTPS URL and does not have to point to an actual resource. Auth0 enforces this recommendation from OIDC regarding additional claims and will silently exclude any claims that do not have a namespace. You can read more about implementing custom claims with Auth0 here.
+
+Click the Save button to save your rule. It will then be enabled by default.
+
+
 ## Configuring Auth Service
 
 Open up the `environments.ts` file and add the following configuration:
