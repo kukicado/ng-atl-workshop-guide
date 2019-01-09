@@ -1,5 +1,27 @@
 # Authentication Service
 
+## Configuring Auth Service
+
+Open up the `environments.ts` file and add the following configuration:
+
+```js
+export const environment = {
+  production: false,
+  auth: {
+    clientId: '{YOUR_AUTH0_CLIENT_ID}',
+    domain: '{YOUR_AUTH0_DOMAIN}', // e.g., you.auth0.com
+    redirect: 'http://localhost:4200/callback',
+    logoutUrl: 'http://localhost:4200',
+    roles_namespace: '{YOUR_ROLES_NAMESPACE}' // e.g., https://secure-dino-api/roles
+  },
+  api: {
+    baseUrl: '{YOUR_API_URL}' // e.g., http://localhost:3005/api/
+  }
+};
+```
+
+## Building the Auth Service
+
 The Authentication service supplies our app with the methods it needs to log in, log out, set up user sessions, and automatically renew tokens. Open `auth.service.ts` and add the following code:
 
 ```js
