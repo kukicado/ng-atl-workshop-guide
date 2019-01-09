@@ -40,11 +40,10 @@ Add the following configuration to the settings for this client:
 
 * **Allowed Callback URLs**: `http://localhost:4200/callback`
 * **Allowed Web Origins**: `http://localhost:4200`
-* **Use Auth0 instead of the IdP to do Single Sign On**: `On`
 
 > **Note**: If you're using an older Auth0 client app that you created at an earlier date, scroll down to the bottom of the **Settings** tab and click **Show Advanced Settings**. Select the **OAuth** tab and verify that the **JsonWebToken Signature Algorithm** is set to `RS256`. \(New clients use this algorithm by default, but older ones may not be set.\)
 
-## Set Up Social Identity Providers {#set-up-social-identity-providers}
+## Set Up Social Identity Providers 
 
 You can set up [social identity providers](https://auth0.com/docs/identityproviders#social) \(IdPs\) if you wish to allow your users to log in with providers like Google, Facebook, Twitter, and more. In the Auth0 Dashboard sidebar, navigate to **Connections** &gt; [**Social Connections**](https://manage.auth0.com/#/connections/social).
 
