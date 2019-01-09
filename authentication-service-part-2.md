@@ -5,8 +5,7 @@ The Authentication service supplies our app with the methods it needs to log in,
 ```js
 // src/app/auth/auth.service.ts
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, bindNodeCallback, timer, of, Subscription } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import { BehaviorSubject, bindNodeCallback } from 'rxjs';
 import * as auth0 from 'auth0-js';
 import { environment } from './../../environments/environment';
 import { Location } from '@angular/common';
@@ -47,7 +46,6 @@ export class AuthService {
   checkSession$ = bindNodeCallback(this.Auth0.checkSession.bind(this.Auth0));
   // Token expiration management
   accessTokenExp: number;
-  refreshSub: Subscription;
   // Hide auth header while performing local login
   // (e.g., on the callback page)
   hideAuthHeader: boolean;
@@ -113,8 +111,6 @@ export class AuthService {
       this.userProfile$.next(this.userProfile);
       // Set flag in local storage stating app is logged in
       localStorage.setItem(this.authFlag, JSON.stringify(true));
-      // Set up silent token renewal for this browser session
-      this.scheduleRenewal();
     } else {
       // Something was missing from expected authResult
       this.localLogout(true);
@@ -124,7 +120,6 @@ export class AuthService {
   private localLogout(redirect?: boolean) {
     this.userProfile$.next(null);
     this.setToken(null);
-    this.unscheduleRenewal();
     this.clearRedirect();
     localStorage.setItem(this.authFlag, JSON.stringify(false));
     // Redirect back to logout URL (if param set)
@@ -142,25 +137,6 @@ export class AuthService {
       returnTo: environment.auth.logoutUrl,
       clientID: environment.auth.clientId
     });
-  }
-
-  scheduleRenewal() {
-    if (!this.isAuthenticated) { return; }
-    // Clean up any previous token renewal
-    this.unscheduleRenewal();
-    // Create and subscribe to expiration timer observable
-    const expiresIn$ = of(this.accessTokenExp).pipe(
-      mergeMap(exp => timer(Math.max(1, exp - Date.now())))
-    );
-    this.refreshSub = expiresIn$.subscribe(
-      () => this.renewAuth()
-    );
-  }
-
-  unscheduleRenewal() {
-    if (this.refreshSub) {
-      this.refreshSub.unsubscribe();
-    }
   }
 
   private handleError(err) {
@@ -216,9 +192,7 @@ export class AuthService {
 }
 ```
 
-We will use Auth0's `/authorize` endpoint \(called with the [auth0.js](https://auth0.com/docs/libraries/auth0js) method `authorize()`\) to open the [Auth0 login page](https://auth0.com/docs/hosted-pages/login) and send users to a [centralized authorization server for authentication](https://auth0.com/blog/authentication-provider-best-practices-centralized-login/). Upon successful authentication, the authorization server will then redirect the user back to our application with a URL hash, which can be parsed to extract auth results. The user's access token, token expiration, profile, and desired redirect URL \(if they were trying to access a guarded route\) are saved in memory. If the user's access token expires while they are still using the app, their session will be automatically renewed.
-
-> **Note**: If the user logged in with a [social identity provider](/auth0-setup.md#set-up-social-identity-providers) and Auth0 dev keys are set up for the connection, any attempts to renew the session silently will return a `login_required` error. To avoid this error, set up client accounts with all social IdPs.
+The new functionality we added was to be able to redirect the user to the page they were previously at before they logged in.
 
 
 
