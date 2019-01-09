@@ -19,7 +19,7 @@
 * [Route Guards](route-guards.md)
 * [Token Interceptor Service](token-interceptor-service.md)
 * [Dinosaur Details Component](dino-details-component.md)
-* [Authentication Service (Part 3)](authentication-service-part-3-.md)
+* [Authentication Service (Part 3)](authentication-service-part-3.md)
 * [Production Configuration](build-and-deploy.md)
 * [Conclusion](conclusion.md)
 
