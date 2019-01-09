@@ -1,7 +1,7 @@
 # Token Interceptor Service
 
 While we could pass write code to add the Authorization header to our HTTP client requests in our API service, we would quickly start violating the DRY principle of programming. An Angular [HTTP interceptor](https://angular.io/api/common/http/HttpInterceptor) 
-The final piece of our Authentication module is a service that provides an [HTTP interceptor] will attach the authenticated user's JWT access token to every API request. Let's see what that code looks like:
+The final piece of our Authentication module is a service that provides an HTTP interceptor will attach the authenticated user's JWT access token to every API request. Let's see what that code looks like:
 
 ```js
 // src/app/auth/secure-interceptor.service.ts
