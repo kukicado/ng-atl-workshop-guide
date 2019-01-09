@@ -34,7 +34,7 @@ Check out these additional resources to learn more:
 * [**Tokens Used by Auth0**](https://auth0.com/docs/tokens): What types of tokens Auth0 uses and for what purposes
 * [**Implicit Grant Flow**](https://auth0.com/docs/api-auth/grant/implicit): Authorization flow typically used for JS web apps
 * [**On Nature of OAuth2's Scopes**](https://auth0.com/blog/on-the-nature-of-oauth2-scopes/): Understanding OAuth2 scopes and their use cases
-* [**OAuth2 Implicit Grant and SPA](https://auth0.com/blog/oauth2-implicit-grant-and-spa/)
+* [**OAuth2 Implicit Grant and SPA**](https://auth0.com/blog/oauth2-implicit-grant-and-spa/)
 * [**GitHub Repo for Authorization Code with PKCE**](https://github.com/auth0/spa-pkce)
 
 ### Documentation
