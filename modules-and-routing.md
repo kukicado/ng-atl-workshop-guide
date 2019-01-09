@@ -5,9 +5,7 @@ Now that we've generated our app's architecture, let's set up our routing proper
 ```js
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SecureInterceptor } from './auth/secure-interceptor.service';
-import { AuthGuard } from './auth/auth.guard';
 import { HomeComponent } from './pages/home/home.component';
 import { CallbackComponent } from './pages/callback.component';
 import { DinosaursComponent } from './pages/dinosaurs/dinosaurs.component';
@@ -25,17 +23,11 @@ const routes: Routes = [
   },
   {
     path: 'dinosaur/:name',
-    component: DinosaurDetailsComponent,
-    canActivate: [
-      AuthGuard
-    ]
+    component: DinosaurDetailsComponent
   },
   {
     path: 'profile',
-    component: ProfileComponent,
-    canActivate: [
-      AuthGuard
-    ]
+    component: ProfileComponent
   },
   {
     path: '',
@@ -48,11 +40,6 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
   providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: SecureInterceptor,
-      multi: true
-    }
   ]
 })
 export class AppRoutingModule { }
