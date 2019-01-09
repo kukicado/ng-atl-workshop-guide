@@ -49,12 +49,11 @@ function (user, context, callback) {
 ```
 Set up a pattern for the editor user to be specifically identified. The example above uses email matching with strict equality. Make sure you also add the app metadata containing your roles to the accessToken as well as the idToken. The access token will provide data to our API so we can verify that the user has the appropriate role when they request resources.
 
-Note: You can use any type of condition you'd like to identify admin users: by email, provider, name, domain, etc.
+> **Note:** You can use any type of condition you'd like to identify editors: by email, provider, name, domain, etc.
 
-The namespace identifier in the addRolesToUser() callback function can be any non-Auth0 HTTP or HTTPS URL and does not have to point to an actual resource. Auth0 enforces this recommendation from OIDC regarding additional claims and will silently exclude any claims that do not have a namespace. You can read more about implementing custom claims with Auth0 here.
+The namespace identifier in the `addRolesToUser()` callback function can be any non-Auth0 HTTP or HTTPS URL and does not have to point to an actual resource. Auth0 enforces this recommendation from OIDC regarding additional claims and will silently exclude any claims that do not have a namespace. You can read more about [implementing custom claims with Auth0 here](https://auth0.com/docs/scopes/current/custom-claims).
 
 Click the Save button to save your rule. It will then be enabled by default.
-
 
 ## Configuring Auth Service
 
