@@ -22,7 +22,7 @@ In your newly created API navigate to the **Scopes** tab and add the following s
 * `read:dino-details`
 * `write:dino-fav`
 
-![](/assets/Screenshot_2019-01-08 APIs.png)
+![](/assets/add_scopes.png)
 
 We will use these scopes to delegate API access to our Angular application.
 
