@@ -1,6 +1,6 @@
 # Profile Component
 
-The Profile component in this sample app is going to be very basic. All it will do is show the user's profile data in a relatively unformatted manner. The route for the Profile page component is protected by the [Authentication guard](/route-guards.md#authentication-guard) so that only authenticated users should be able to access it.
+The Profile component in this sample app is going to be very basic. All it will do is show the user's profile data in a relatively unformatted manner. The route for the Profile page component will eventually be protected by the [Authentication guard](/route-guards.md#authentication-guard) so that only authenticated users should be able to access it.
 
 > **Note**: Feel free to revisit this component later and make it look much nicer.
 
