@@ -3,11 +3,11 @@
 
 ## Adding a Custom Rule - User Role
 
-For our API, one of the endpoints also requires a custom claim. Our Angular application, or Token Minter thus far, does not have permission alone to grant this scope. We will implement a custom Auth0 Rule, that will allow us to add this custom roles claim to our access_token.
+For our API, one of the endpoints also requires a custom claim. Our Angular application does not have permission alone to grant this scope. We will implement a custom Auth0 Rule, that will allow us to add this custom roles claim to our `access_token`.
 
-Auth0 Rules are JavaScript functions that are executed in Auth0 as part of the transaction every time a user authenticates. In this way, rules allow you to easily customize and extend your authentication process. We want to use a rule to add a role to users that log into our app. In this manner, we can authorize specific user roles in different ways.
+[Auth0 Rules](https://auth0.com/docs/rules) are JavaScript functions that are executed in Auth0 as part of the transaction every time a user authenticates. In this way, rules allow you to easily customize and extend your authentication process. We want to use a rule to add a role to users that log into our app. In this manner, we can authorize specific user roles in different ways.
 
-Go to the Rules section in the Dashboard sidebar and click the +Create Rule button. Choose the Empty Rule template. (Alternatively, you could choose the Set roles to a user template and modify it according to your needs.)
+Go to the [Rules section in the Dashboard](https://manage.auth0.com/#/rules) sidebar and click the +Create Rule button. Choose the Empty Rule template. (Alternatively, you could choose the "Set roles to a user" template and modify it according to your needs.)
 
 Add the following code as shown below:
 
@@ -47,6 +47,7 @@ function (user, context, callback) {
   });
 }
 ```
+
 Set up a pattern for the editor user to be specifically identified. The example above uses email matching with strict equality. Make sure you also add the app metadata containing your roles to the accessToken as well as the idToken. The access token will provide data to our API so we can verify that the user has the appropriate role when they request resources.
 
 > **Note:** You can use any type of condition you'd like to identify editors: by email, provider, name, domain, etc.
