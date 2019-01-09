@@ -15,6 +15,20 @@ export const environment = {
 };
 ```
 
+Next, since we need to talk to an external API over HTTP we are going to need to include the HTTPClientModule to our Angular app. To do this, add the following to your `app.module.ts` file:
+
+```ts
+import {HttpClientModule} from '@angular/common/http';
+
+...
+
+imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule
+  ],
+```
+
 ## Dino Interface
 
 An interface in the simplest terms allow us to define what our data structures will look like. Interfaces are a TypeScript feature but since Angular is written in TypeScript we'll make use of them here. We'll define two interfaces that will represent two different dinosaur data structures. `IDino` will be a simple data structure that simply has the dinosaurs name, pronounciation, and whether it has been favorited or not, while the `IDinoDetails` interface will have all of the details of our dinosaur. We'll implement them like so:
